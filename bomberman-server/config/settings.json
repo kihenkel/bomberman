@@ -1,5 +1,9 @@
 {
+  "logLevel": "verbose",
   "roundsUntilBombExplodes": 3,
+  "server": {
+    "port": 3008
+  },
   "level": {
     "characterMap": {
       "EMPTY": [".", " "],
