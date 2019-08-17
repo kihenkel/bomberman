@@ -1,0 +1,15 @@
+{
+  "roundsUntilBombExplodes": 3,
+  "level": {
+    "characterMap": {
+      "EMPTY": [".", " "],
+      "UNBREAKABLE": ["@"],
+      "BREAKABLE": ["#"],
+      "BOMB": ["B"],
+      "TRAP": ["T"],
+      "ITEM_BOMB_RADIUS": ["*"],
+      "ITEM_BOMB_AMOUNT": ["+"],
+      "PLAYER_START": ["!"]
+    }
+  }
+}
