@@ -16,7 +16,7 @@ const Color = {
 };
 
 const log = (...msg) => {
-  process.stdout.write(` ${msg.join(' ')}\n`);
+  console.log(...msg);
 };
 
 const asColor = (msg, color) =>

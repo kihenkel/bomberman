@@ -1,12 +1,17 @@
 {
   "logLevel": "verbose",
-  "roundsUntilBombExplodes": 3,
   "server": {
     "port": 3008
   },
+  "world": {
+    "roundsUntilBombExplodes": 3
+  },
+  "player": {
+    "maxBombs": 1
+  },
   "level": {
     "characterMap": {
-      "EMPTY": [".", " "],
+      "EMPTY": ["."],
       "UNBREAKABLE": ["@"],
       "BREAKABLE": ["#"],
       "BOMB": ["B"],

@@ -3,7 +3,6 @@ const LevelElement = require('./LevelElement');
 class Unbreakable extends LevelElement {
   constructor() {
     super();
-    this.isWalkable = true;
   }
 }
 
