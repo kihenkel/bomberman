@@ -6,6 +6,11 @@ const onStart = () => {
   levelStore.executeForAllLevelElements('onStart');
 };
 
+const onRoundEnd = (eventManager) => {
+  logger.verbose('Lifecycle: onRoundEnd');
+  levelStore.executeForAllLevelElements('onRoundEnd', eventManager);
+};
+
 const onRound = () => {
   logger.verbose('Lifecycle: onRound');
   levelStore.executeForAllLevelElements('onRound');
@@ -13,5 +18,6 @@ const onRound = () => {
 
 module.exports = {
   onStart,
+  onRoundEnd,
   onRound,
 };

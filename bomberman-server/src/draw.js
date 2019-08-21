@@ -8,7 +8,7 @@ module.exports = () => {
   levelGrid.forEach(row => {
     let line = '';
     row.forEach(stack => {
-      const levelElement = stack[stack.length - 1];
+      const levelElement = stack.getTopElement();
       let levelElementKey = levelElement.constructor.key;
 
       if (levelElementKey === 'PLAYER_START') {

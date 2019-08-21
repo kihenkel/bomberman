@@ -20,7 +20,7 @@ const fillPlayers = (amountPlayers, playerSettings) => {
   for (let playerId = 0; playerId < Math.min(amountPlayers, playerStartStacks.length); playerId++) {
     const player = new Player(playerId, playerSettings);
     players.push(player);
-    playerStartStacks[playerId].push(player);
+    playerStartStacks[playerId].addLevelElement(player);
   }
 };
 

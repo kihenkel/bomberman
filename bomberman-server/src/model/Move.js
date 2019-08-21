@@ -3,6 +3,6 @@ module.exports = {
   RIGHT: 'RIGHT',
   DOWN: 'DOWN',
   LEFT: 'LEFT',
-  PLANT_BOMB: 'PLANT_BOMB',
+  BOMB: 'BOMB',
   DO_NOTHING: 'DO_NOTHING',
 };

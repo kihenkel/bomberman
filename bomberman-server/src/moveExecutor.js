@@ -5,30 +5,23 @@ const playerStore = require('./playerStore');
 const bombStore = require('./bombStore');
 
 const executeMove = (offsetX, offsetY) => (player) => {
-  const playerPos = levelStore.getPositionForPlayer(player.id);
+  const playerPos = levelStore.getPositionForLevelElement(player);
   if (!playerPos) {
     throw new Error(`Could not find player ${player.id}.`);
   }
   const originStack = levelStore.getStackAt(playerPos.x, playerPos.y);
   const targetStack = levelStore.getStackAt(playerPos.x + offsetX, playerPos.y + offsetY);
 
-  const playerIndex = originStack.findIndex(levelElement => 
-    levelElement instanceof Player && levelElement.id === player.id
-  );
-
-  if (playerIndex < 0) {
-    throw new Error(`Could not find player ${player.id} in stack ${originStack}.`);
-  }
-  originStack.splice(playerIndex, 1);
-  targetStack.push(player);
+  originStack.deleteLevelElement(player);
+  targetStack.addLevelElement(player);
 };
 
-const executePlantBomb = (player) => {
-  const playerPos = levelStore.getPositionForPlayer(player.id);
+const executePlantBomb = (player, worldSettings) => {
+  const playerPos = levelStore.getPositionForLevelElement(player);
   const targetStack = levelStore.getStackAt(playerPos.x, playerPos.y);
 
-  const bomb = bombStore.createBomb();
-  targetStack.push(bomb);
+  const bomb = bombStore.createBomb(worldSettings);
+  targetStack.addLevelElement(bomb);
 };
 
 const moveMap = {
@@ -36,18 +29,18 @@ const moveMap = {
   [Move.RIGHT]: executeMove(1, 0),
   [Move.DOWN]: executeMove(0, 1),
   [Move.LEFT]: executeMove(-1, 0),
-  [Move.PLANT_BOMB]: executePlantBomb,
-  [Move.DO_NOTHING]: () => successValidation(),
+  [Move.BOMB]: executePlantBomb,
+  [Move.DO_NOTHING]: () => {},
 };
 
-const executeMoves = () => {
+const executeMoves = (worldSettings) => {
   const players = playerStore.getAlivePlayers();
 
   players.forEach(player => {
     if (!player.pendingMove) {
       return;
     }
-    moveMap[player.pendingMove](player);
+    moveMap[player.pendingMove](player, worldSettings);
   });
 };
 

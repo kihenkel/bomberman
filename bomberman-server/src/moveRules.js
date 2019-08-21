@@ -7,7 +7,8 @@ const failedValidation = (reason) => ({ success: false, reason });
 const failedValidationWithContext = (move, reason) => failedValidation(`Cannot perform move ${move}! ${reason}`);
 
 const validateMove = (move, offsetX, offsetY) => (playerId) => {
-  const playerPos = levelStore.getPositionForPlayer(playerId);
+  const player = playerStore.getPlayer(playerId);
+  const playerPos = levelStore.getPositionForLevelElement(player);
   if (!playerPos) {
     throw new Error(`Could not find player ${playerId}.`);
   }
@@ -24,7 +25,7 @@ const validateMove = (move, offsetX, offsetY) => (playerId) => {
 const validatePlantBomb = (playerId) => {
   const player = playerStore.getPlayer(playerId);
   if (player.amountBombs <= 0) {
-    return failedValidationWithContext(Move.PLANT_BOMB, 'Not enough bombs.');
+    return failedValidationWithContext(Move.BOMB, 'Not enough bombs.');
   }
   return successValidation();
 };
@@ -34,7 +35,7 @@ const validationMap = {
   [Move.RIGHT]: validateMove(Move.RIGHT, 1, 0),
   [Move.DOWN]: validateMove(Move.DOWN, 0, 1),
   [Move.LEFT]: validateMove(Move.LEFT, -1, 0),
-  [Move.PLANT_BOMB]: validatePlantBomb,
+  [Move.BOMB]: validatePlantBomb,
   [Move.DO_NOTHING]: () => successValidation(),
 };
 

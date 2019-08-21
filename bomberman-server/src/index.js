@@ -14,7 +14,7 @@ const init = (settings) => {
   server.start(settings.server);
   levelStore.initLevel('standard.map', settings.level);
   playerStore.fillPlayers(2, settings.player);
-  gameManager.startGame();
+  gameManager.startGame(settings.world);
 };
 
 init(settings);

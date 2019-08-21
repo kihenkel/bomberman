@@ -7,14 +7,16 @@ const lifecycle = require('./lifecycle');
 
 const playerStore = require('./playerStore');
 const moveExecutor = require('./moveExecutor');
+const eventManager = require('./eventManager');
 
 const draw = require('./draw');
 
-const executeMoves = () => {
-  moveExecutor.executeMoves();
+const executeMoves = (worldSettings) => {
+  moveExecutor.executeMoves(worldSettings);
 };
 
 const nextRound = () => {
+  lifecycle.onRoundEnd(eventManager);
   logger.info('=== NEW ROUND ===');
   gameState.setNextRound();
   logger.info(`Round ${gameState.getCurrentRound()}!`);
@@ -23,7 +25,7 @@ const nextRound = () => {
   draw();
 };
 
-const startGame = () => {
+const startGame = (worldSettings) => {
   logger.info('Starting game ...');
 
   const handlePlayerInput = (playerId, move) => {
@@ -36,7 +38,7 @@ const startGame = () => {
     playerStore.registerMove(playerId, move);
 
     if (playerStore.haveAllPlayersMadeMove()) {
-      executeMoves();
+      executeMoves(worldSettings);
       nextRound();
     }
   };

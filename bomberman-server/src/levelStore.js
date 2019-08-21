@@ -21,11 +21,11 @@ const executeForAllLevelElements = (functionName, ...args) => {
   });
 };
 
-const getPositionForPlayer = (playerId) => {
+const getPositionForLevelElement = (levelElement) => {
   let x = -1;
   const y = levelGrid.findIndex((row) => {
     x = row.findIndex(stack =>
-      stack.some(levelElement => levelElement instanceof Player && levelElement.id === playerId)
+      stack.some(element => element === levelElement)
     );
     return x >= 0;
   });
@@ -50,11 +50,21 @@ const getStacksWithLevelElement = (LevelElement) => {
   }, []);
 };
 
+const getLevelGridBoundaries = () => {
+  return {
+    minX: 0,
+    minY: 0,
+    maxX: levelGrid[0].length - 1,
+    maxY: levelGrid.length - 1,
+  };
+};
+
 module.exports = {
   initLevel,
   getLevelGrid,
   executeForAllLevelElements,
-  getPositionForPlayer,
+  getPositionForLevelElement,
   getStackAt,
   getStacksWithLevelElement,
+  getLevelGridBoundaries,
 };

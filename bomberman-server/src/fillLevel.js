@@ -1,8 +1,9 @@
 const LevelElements = require('./model/LevelElements');
+const Stack = require('./model/Stack');
 
 const getInstanceForKey = (key) => {
   if (key === LevelElements.Empty.key) {
-    return [new LevelElements.Empty()];
+    return new Stack(new LevelElements.Empty());
   }
 
   const LevelElement = LevelElements.find(levelElement => {
@@ -10,9 +11,9 @@ const getInstanceForKey = (key) => {
   });
 
   if (!LevelElement) {
-    return [];
+    return new Stack();
   }
-  return [new LevelElements.Empty(), new LevelElement()];
+  return new Stack([new LevelElements.Empty(), new LevelElement()]);
 };
 
 module.exports = (levelGrid) => {

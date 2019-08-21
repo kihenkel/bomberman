@@ -1,13 +1,12 @@
 const LevelElement = require('./LevelElement');
 
-class Trap extends LevelElement {
+class Fire extends LevelElement {
   constructor() {
     super();
-    this.isBreakable = true;
     this.isWalkable = true;
   }
 }
 
-Trap.key = 'TRAP';
+Fire.key = 'FIRE';
 
-module.exports = Trap;
+module.exports = Fire;
