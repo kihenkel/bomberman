@@ -5,6 +5,10 @@ class Breakable extends LevelElement {
     super();
     this.isBreakable = true;
   }
+
+  onHitByFire(eventManager) {
+    eventManager.onLevelElementDestroyed(this);
+  }
 }
 
 Breakable.key = 'BREAKABLE';

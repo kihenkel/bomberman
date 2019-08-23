@@ -1,18 +1,19 @@
-const logger = require('./utils/logger');
-const handleMove = require('./server/service/handleMove');
+const logger = require('./../utils/logger');
+const handleMove = require('./../server/service/handleMove');
 
-const gameState = require('./gameState');
-const moveRules = require('./moveRules');
-const lifecycle = require('./lifecycle');
+const gameState = require('./../gameState');
+const moveRules = require('./../moveRules');
+const lifecycle = require('./../lifecycle');
 
-const playerStore = require('./playerStore');
-const moveExecutor = require('./moveExecutor');
-const eventManager = require('./eventManager');
+const playerStore = require('./../stores/playerStore');
 
-const draw = require('./draw');
+const moveExecutor = require('./../moveExecutor');
+const eventManager = require('./../eventManager');
 
-const executeMoves = (worldSettings) => {
-  moveExecutor.executeMoves(worldSettings);
+const draw = require('./../draw');
+
+const executeMoves = () => {
+  moveExecutor.executeMoves();
 };
 
 const nextRound = () => {
@@ -20,12 +21,12 @@ const nextRound = () => {
   logger.info('=== NEW ROUND ===');
   gameState.setNextRound();
   logger.info(`Round ${gameState.getCurrentRound()}!`);
-  lifecycle.onRound();
+  lifecycle.onRound(eventManager);
 
   draw();
 };
 
-const startGame = (worldSettings) => {
+const startGame = () => {
   logger.info('Starting game ...');
 
   const handlePlayerInput = (playerId, move) => {
@@ -35,10 +36,12 @@ const startGame = (worldSettings) => {
     if (!moveValidationResult.success) {
       return moveValidationResult.reason;
     }
-    playerStore.registerMove(playerId, move);
+    
+    const player = playerStore.getByPlayerId(playerId);
+    player.registerMove(move);
 
     if (playerStore.haveAllPlayersMadeMove()) {
-      executeMoves(worldSettings);
+      executeMoves();
       nextRound();
     }
   };

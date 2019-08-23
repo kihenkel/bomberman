@@ -14,7 +14,7 @@ class Bomb extends LevelElement {
     this.roundsUntilExplode -= 1;
 
     if (this.roundsUntilExplode < 0) {
-      eventManager.onBombExplode(this);
+      eventManager.onExplode(this);
     }
   }
 

@@ -1,24 +1,25 @@
-const Player = require('./model/LevelElements/Player');
 const loadLevel = require('./loadLevel');
 const fillLevel = require('./fillLevel');
 
 let levelGrid;
 
 const initLevel = (levelName, levelSettings) => {
-  levelGrid = loadLevel(levelName, levelSettings);
-  levelGrid = fillLevel(levelGrid);
+  levelGrid = fillLevel(loadLevel(levelName, levelSettings));
 };
 
 const getLevelGrid = () => levelGrid;
 
 const executeForAllLevelElements = (functionName, ...args) => {
+  const functionsToExecute = [];
   levelGrid.forEach(row => {
     row.forEach(stack => {
       stack.forEach(levelElement => {
-        levelElement[functionName](...args);
+        functionsToExecute.push(levelElement[functionName].bind(levelElement));
       });
     });
   });
+
+  functionsToExecute.forEach(fn => fn(...args));
 };
 
 const getPositionForLevelElement = (levelElement) => {

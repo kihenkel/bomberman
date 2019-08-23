@@ -1,23 +1,20 @@
 const logger = require('./utils/logger');
-const levelStore = require('./levelStore');
+const levelManager = require('./managers/levelManager');
 
-const onStart = () => {
-  logger.verbose('Lifecycle: onStart');
-  levelStore.executeForAllLevelElements('onStart');
+const lifecycles = [
+  'onStart',
+  'onRoundEnd',
+  'onRound',
+];
+
+const onLifecycle = (lifecycleName) => (...args) => {
+  logger.verbose('Lifecycle:', lifecycleName);
+  levelManager.executeForAllLevelElements(lifecycleName, ...args);
 };
 
-const onRoundEnd = (eventManager) => {
-  logger.verbose('Lifecycle: onRoundEnd');
-  levelStore.executeForAllLevelElements('onRoundEnd', eventManager);
-};
+const moduleExport = {};
+lifecycles.forEach(lifecycleName => {
+  moduleExport[lifecycleName] = onLifecycle(lifecycleName);
+});
 
-const onRound = () => {
-  logger.verbose('Lifecycle: onRound');
-  levelStore.executeForAllLevelElements('onRound');
-};
-
-module.exports = {
-  onStart,
-  onRoundEnd,
-  onRound,
-};
+module.exports = moduleExport;

@@ -1,8 +1,7 @@
-const Move = require('./../Move');
 const LevelElement = require('./LevelElement');
 
 class Player extends LevelElement {
-  constructor(playerId, playerSettings) {
+  constructor(worldSettings, playerId, playerSettings) {
     super();
     this.id = playerId;
     this.isWalkable = true;
@@ -13,7 +12,7 @@ class Player extends LevelElement {
   }
 
   onStart() {
-    this.isAlive = true;
+    this.alive = true;
     this.pendingMove = undefined;
     this.amountBombs = this.maxBombs;
   }
@@ -23,8 +22,24 @@ class Player extends LevelElement {
     this.pendingMove = undefined;
   }
 
+  onHitByFire() {
+    this.alive = false;
+  }
+
   registerMove(move) {
     this.pendingMove = move;
+  }
+
+  isAlive() {
+    return this.alive;
+  }
+
+  getPendingMove() {
+    return this.pendingMove;
+  }
+
+  hasMadeMove() {
+    return !!this.pendingMove;
   }
 }
 

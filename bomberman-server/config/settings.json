@@ -5,7 +5,8 @@
   },
   "world": {
     "roundsUntilBombExplodes": 1,
-    "bombRadius": 3
+    "bombRadius": 3,
+    "trapRadius": 3
   },
   "player": {
     "maxBombs": 1

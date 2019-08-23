@@ -1,4 +1,4 @@
-const arrayFunctions = ['concat', 'forEach', 'every', 'some'];
+const arrayFunctions = ['concat', 'forEach', 'every', 'some', 'includes'];
 
 class Stack {
   constructor(elements) {
@@ -25,6 +25,10 @@ class Stack {
   addLevelElement(levelElement) {
     levelElement.setStack(this);
     return this.elements.push(levelElement);
+  }
+
+  includesLevelElement(LevelElement) {
+    return !!this.elements.find((element) => element.constructor.key === LevelElement.key);
   }
 
   deleteLevelElement(levelElement) {

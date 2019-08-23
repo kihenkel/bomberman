@@ -1,26 +1,26 @@
 const Move = require('./model/Move');
 const Player = require('./model/LevelElements/Player');
-const levelStore = require('./levelStore');
-const playerStore = require('./playerStore');
-const bombStore = require('./bombStore');
+const levelManager = require('./managers/levelManager');
+const playerStore = require('./stores/playerStore');
+const bombStore = require('./stores/bombStore');
 
 const executeMove = (offsetX, offsetY) => (player) => {
-  const playerPos = levelStore.getPositionForLevelElement(player);
+  const playerPos = levelManager.getPositionForLevelElement(player);
   if (!playerPos) {
     throw new Error(`Could not find player ${player.id}.`);
   }
-  const originStack = levelStore.getStackAt(playerPos.x, playerPos.y);
-  const targetStack = levelStore.getStackAt(playerPos.x + offsetX, playerPos.y + offsetY);
+  const originStack = levelManager.getStackAt(playerPos.x, playerPos.y);
+  const targetStack = levelManager.getStackAt(playerPos.x + offsetX, playerPos.y + offsetY);
 
   originStack.deleteLevelElement(player);
   targetStack.addLevelElement(player);
 };
 
-const executePlantBomb = (player, worldSettings) => {
-  const playerPos = levelStore.getPositionForLevelElement(player);
-  const targetStack = levelStore.getStackAt(playerPos.x, playerPos.y);
+const executePlantBomb = (player) => {
+  const playerPos = levelManager.getPositionForLevelElement(player);
+  const targetStack = levelManager.getStackAt(playerPos.x, playerPos.y);
 
-  const bomb = bombStore.createBomb(worldSettings);
+  const bomb = bombStore.create();
   targetStack.addLevelElement(bomb);
 };
 
@@ -33,14 +33,14 @@ const moveMap = {
   [Move.DO_NOTHING]: () => {},
 };
 
-const executeMoves = (worldSettings) => {
-  const players = playerStore.getAlivePlayers();
+const executeMoves = () => {
+  const players = playerStore.getAll().filter(player => player.isAlive());
 
   players.forEach(player => {
     if (!player.pendingMove) {
       return;
     }
-    moveMap[player.pendingMove](player, worldSettings);
+    moveMap[player.pendingMove](player);
   });
 };
 
